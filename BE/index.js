@@ -20,7 +20,7 @@ try {
 
 app.get("/", async(req, res) => {
  const AllTask= await Task.find({})
- res.status(200).json(AllTask);
+ return res.status(200).json(AllTask);
 });
 
 app.post("/add", async (req, res) => {
