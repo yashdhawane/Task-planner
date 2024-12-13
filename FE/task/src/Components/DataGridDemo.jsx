@@ -1,53 +1,55 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
-import { MenuItem, Select } from '@mui/material';
-
+import { Button, MenuItem, Select } from '@mui/material';
+import useFetch from '../hooks/useFetch';
+import Form from './Form';
 const columns = [
   { field: 'date', headerName: 'Date', width: 120 },
   {
     field: 'entityname',
     headerName: 'Entity Name',
     width: 150,
-    editable: true,
-    align: 'right',
+    
+    align: 'left',
   },
   {
     field: 'tasktype',
     headerName: 'Task Type',
     width: 150,
-    editable: true,
-    align: 'right',
+    
+    align: 'left',
   },
-  {
-    field: 'time',
-    headerName: 'Time',
-    type: 'number',
-    width: 110,
-    editable: true,
-    align: 'right',
-  },
+  
   {
     field: 'contactperson',
     headerName: 'Contact Person',
     description: 'This column has a value getter and is not sortable.',
     sortable: false,
     width: 160,
-    align: 'right',
+    align: 'left',
+  },
+  {
+    field: 'phone',
+    headerName: 'Phone',
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    width: 160,
+    align: 'left',
   },
   {
     field: 'notes',
     headerName: 'Notes',
     width: 450,
-    editable: true,
-    align: 'right',
+    
+    align: 'left',
   },
   {
     field: 'status',
     headerName: 'Status',
     width: 150,
-    editable: true,
-    align: 'right',
+    
+    align: 'left',
   },
   {
     field: 'actions',
@@ -72,17 +74,7 @@ const columns = [
   },
 ];
 
-const rows = [
-  { id: 1, date: '2024-01-01', tasktype: 'Snow', entityname: 'Jon', time: 14, contactperson: 'yash' },
-  { id: 2, date: '2024-01-02', tasktype: 'Lannister', entityname: 'Cersei', time: 31, contactperson: 'yash' },
-  { id: 3, date: '2024-01-03', tasktype: 'Lannister', entityname: 'Jaime', time: 31, contactperson: 'yash' },
-  { id: 4, date: '2024-01-04', tasktype: 'Stark', entityname: 'Arya', time: 11, contactperson: 'yash' },
-  { id: 5, date: '2024-01-05', tasktype: 'Targaryen', entityname: 'Daenerys', time: null, contactperson: 'yash' },
-  { id: 6, date: '2024-01-06', tasktype: 'Melisandre', entityname: null, time: 150, contactperson: 'yash' },
-  { id: 7, date: '2024-01-07', tasktype: 'Clifford', entityname: 'Ferrara', time: 44, contactperson: 'yash' },
-  { id: 8, date: '2024-01-08', tasktype: 'Frances', entityname: 'Rossini', time: 36, contactperson: 'yash' },
-  { id: 9, date: '2024-01-09', tasktype: 'Roxie', entityname: 'Harvey', time: 65, contactperson: 'yash' },
-];
+
 
 const handleAction = (action, row) => {
   switch (action) {
@@ -101,10 +93,24 @@ const handleAction = (action, row) => {
 };
 
 export default function DataGridDemo() {
+  const [modal,setmodal]=React.useState(false)
+  const {data,loading,error,fetchData}=useFetch('http://localhost:3000/')
+  
   return (
+    <>
+    <Button variant='contained' onClick={()=>{
+      setmodal(true)
+    }}>ADD</Button>
+
+    {modal && <Form open={modal} onClose={()=>{
+      setmodal(false)
+    }} fetchData={fetchData}/>}
+    {loading && <p>Loading...</p>}
+    {error && <p>Error: {error}</p>}
+    
     <Box sx={{ height: 400, width: '100%' }}>
-      <DataGrid
-        rows={rows}
+      {data && <DataGrid
+         rows={data.map(row => ({ ...row, id: row._id }))}
         columns={columns}
         initialState={{
           pagination: {
@@ -115,7 +121,8 @@ export default function DataGridDemo() {
         }}
         pageSizeOptions={[5]}
         disableRowSelectionOnClick
-      />
+      />}
     </Box>
+    </>
   );
 }
