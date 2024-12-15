@@ -9,9 +9,6 @@ export default defineConfig({
       external: ['axios'], // Explicitly mark axios as an external dependency
     },
   },
-  server: {
-    host: '0.0.0.0',
-    port: 4000, // Replace with your preferred port
-},
+  
   plugins: [react()],
 })
