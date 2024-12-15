@@ -12,7 +12,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 app.use(cors({
     origin: NODE_ENV === 'production' 
-      ? 'https://your-frontend-url.com' 
+      ? 'https://task-planner-fe.onrender.com' 
       : 'http://localhost:5173' // Vite default port
   }));
 app.use(express.json());
