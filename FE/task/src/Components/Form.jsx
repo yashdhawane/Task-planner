@@ -14,8 +14,9 @@ import {
 } from '@mui/material';
 import axios from 'axios';
 
-
-const Form = ({ open, onClose,fetchData}) => {
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL;
+const Form = ({ open, onClose,fetchData,selectedRow}) => {
+  console.log(selectedRow)
   const formRef = useRef({
     entityname: '',
     tasktype: '',
@@ -25,6 +26,18 @@ const Form = ({ open, onClose,fetchData}) => {
     notes: '',
     status: 'open'
   });
+
+  useEffect(()=>{
+    if(selectedRow){
+      formRef.current.entityname=selectedRow.entityname || '',
+      formRef.current.tasktype=selectedRow.tasktype || '',
+      formRef.current.date=selectedRow.date || '',
+      formRef.current.phone=selectedRow.phone || '',
+      formRef.current.contactperson=selectedRow.contactperson || '',
+      formRef.current.notes=selectedRow.notes || '',
+      formRef.current.status=selectedRow.status || ''
+    }
+  },[selectedRow])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,7 +60,8 @@ const Form = ({ open, onClose,fetchData}) => {
 
     console.log(entityname,tasktype,date,phone,contactperson,status,notes);
     try {
-        await axios.post("http://localhost:3000/add", {
+      if(selectedRow){
+        await axios.put(`${API_BASE_URL}/tasks/${selectedRow._id}`, {
             entityname,
             tasktype,
             date,
@@ -56,7 +70,17 @@ const Form = ({ open, onClose,fetchData}) => {
             status,
             notes
         });
-        
+      }else{
+        await axios.post(`${API_BASE_URL}/add`, {
+            entityname,
+            tasktype,
+            date,
+            phone,
+            contactperson,
+            status,
+            notes
+        });
+      }
         // Reset form values
     formRef.current={
         entityname:"",
@@ -94,7 +118,7 @@ const Form = ({ open, onClose,fetchData}) => {
 
           <TextField
             name="date"
-            // label="Due Date"
+           
             type="date"
             defaultValue={formRef.current.date}
             onChange={handleChange}
