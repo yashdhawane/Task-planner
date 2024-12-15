@@ -5,12 +5,12 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   build: {
     outDir: 'dist',
-    rollupOptions: {
-      external: ['axios'], // Explicitly mark axios as an external dependency
-    },
+    // rollupOptions: {
+    //   external: ['axios'], // Explicitly mark axios as an external dependency
+    // },
     server: {
       host: '0.0.0.0',
-      port: 4000, // Replace with your preferred port
+      port: 3000, // Replace with your preferred port
   },
   },
   
