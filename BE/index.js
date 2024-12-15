@@ -10,21 +10,10 @@ const app = express();
 const PORT=process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development'; 
 
-app.use(cors({
-    origin: NODE_ENV === 'production' 
-      ? 'https://task-planner-fe.onrender.com' 
-      : 'http://localhost:5173' // Vite default port
-  }));
+app.use(cors());
 app.use(express.json());
 
-if (NODE_ENV === 'production') {
-    // Serve static files from frontend build (if applicable)
-    // app.use(express.static(path.join(__dirname, '../FE/task/dist')));
-    app.get('/', (req, res) => {
-        // res.sendFile(path.join(__dirname, '../FE/task/dist', 'index.html'));
-        app.get('/', (req, res) => res.send('Backend is running!'));
-      });
-  }
+
 
 try {
     connectToDatabase();
