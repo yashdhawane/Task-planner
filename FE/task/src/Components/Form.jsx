@@ -102,7 +102,7 @@ const Form = ({ open, onClose,fetchData,selectedRow}) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add New Task</DialogTitle>
+      <DialogTitle>{selectedRow ? "Edit Task" : "Add New Task"}</DialogTitle>
       <DialogContent>
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', minWidth: '400px', marginTop: '1rem' }}>
           <TextField
@@ -187,7 +187,7 @@ const Form = ({ open, onClose,fetchData,selectedRow}) => {
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button onClick={handleSubmit} variant="contained" color="primary">
-          Add Task
+          {selectedRow ? "Update Task" : "Add Task"}
         </Button>
       </DialogActions>
     </Dialog>
